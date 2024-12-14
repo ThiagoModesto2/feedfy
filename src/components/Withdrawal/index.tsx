@@ -131,7 +131,7 @@ export const Withdrawal: FC = () => {
 
   return (
     <>
-      <PopupWithdrawal isVisible={isVisible} price={0.05} />
+      <PopupWithdrawal isVisible={isVisible} price={10} />
 
       <div className={styles.container}>
         <div className={styles.valorBoxSaque}>
