@@ -2,14 +2,18 @@
 
 import React, { useState, type FC } from "react";
 import { useRouter } from "next/navigation";
-
-import { Player } from "@lottiefiles/react-lottie-player";
+import dynamic from "next/dynamic";
 
 import Button from "../common/Button";
 import LoadingPopup from "../common/LoadingPopup";
 import { queryParams } from "@/utils/queryParams";
 
 import styles from "./styles.module.css";
+
+const LottiePlayer = dynamic(
+  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
+  { ssr: false }
+);
 
 const Welcome: FC = () => {
   const router = useRouter();
@@ -32,7 +36,7 @@ const Welcome: FC = () => {
         <p className={styles.text}>ao FeedFy!</p>
 
         <div className={styles.icon}>
-          <Player
+          <LottiePlayer
             src="https://cdn.lordicon.com/tqywkdcz.json"
             loop
             autoplay
@@ -42,7 +46,7 @@ const Welcome: FC = () => {
               display: "flex",
               margin: "0 auto",
             }}
-          ></Player>
+          ></LottiePlayer>
         </div>
 
         <p style={{ textAlign: "center" }}>Para começar, clique abaixo:</p>

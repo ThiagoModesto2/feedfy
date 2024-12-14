@@ -1,9 +1,14 @@
 "use client";
 
 import React, { type FC } from "react";
-import { Player } from "@lottiefiles/react-lottie-player";
+import dynamic from "next/dynamic";
 
 import styles from "./styles.module.css";
+
+const LottiePlayer = dynamic(
+  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
+  { ssr: false }
+);
 
 interface LoadingPopupProps {
   isVisible: boolean;
@@ -15,7 +20,7 @@ export const LoadingPopup: FC<LoadingPopupProps> = ({ isVisible }) => {
       {isVisible && (
         <div className={styles.overlay}>
           <div className={styles.popupContainer}>
-            <Player
+            <LottiePlayer
               src="https://cdn.lordicon.com/avytqtql.json"
               loop
               autoplay

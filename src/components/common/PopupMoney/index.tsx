@@ -1,12 +1,16 @@
 "use client";
 
 import React, { type FC } from "react";
-import { Player } from "@lottiefiles/react-lottie-player";
+import dynamic from "next/dynamic";
 
-import usePriceStore from "@/store/usePriceStore";
 import { formatMoneyBRL } from "@/utils/formatMoneyBRL";
 
 import styles from "./styles.module.css";
+
+const LottiePlayer = dynamic(
+  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
+  { ssr: false }
+);
 
 interface PopupMoneyProps {
   isVisible: boolean;
@@ -24,7 +28,7 @@ export const PopupMoney: FC<PopupMoneyProps> = ({
       {isVisible && (
         <div className={styles.overlay}>
           <div className={styles.popupContainer}>
-            <Player
+            <LottiePlayer
               src="https://cdn.lordicon.com/xzksbhzh.json"
               loop
               autoplay

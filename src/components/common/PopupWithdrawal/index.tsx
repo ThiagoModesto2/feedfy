@@ -2,11 +2,16 @@
 
 import React, { useEffect, type FC } from "react";
 import { useRouter } from "next/navigation";
-import { Player } from "@lottiefiles/react-lottie-player";
+import dynamic from "next/dynamic";
 
 import { formatMoneyBRL } from "@/utils/formatMoneyBRL";
 
 import styles from "./styles.module.css";
+
+const LottiePlayer = dynamic(
+  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
+  { ssr: false }
+);
 
 interface PopupWithdrawalProps {
   isVisible: boolean;
@@ -34,7 +39,7 @@ export const PopupWithdrawal: FC<PopupWithdrawalProps> = ({
       {isVisible && (
         <div className={styles.overlay}>
           <div className={styles.popupContainer}>
-            <Player
+            <LottiePlayer
               src="https://cdn.lordicon.com/xzksbhzh.json"
               loop
               autoplay

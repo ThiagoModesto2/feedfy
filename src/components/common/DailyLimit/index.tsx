@@ -1,11 +1,17 @@
 "use client";
 
 import React, { type FC } from "react";
-import { Player } from "@lottiefiles/react-lottie-player";
+import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+
+import Button from "../Button";
 
 import styles from "./styles.module.css";
-import Button from "../Button";
-import { useRouter } from "next/navigation";
+
+const LottiePlayer = dynamic(
+  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
+  { ssr: false }
+);
 
 interface DailyLimitProps {
   isVisible: boolean;
@@ -23,7 +29,7 @@ export const DailyLimit: FC<DailyLimitProps> = ({ isVisible }) => {
       {isVisible && (
         <div className={styles.overlay}>
           <div className={styles.popupContainer}>
-            <Player
+            <LottiePlayer
               src="https://cdn.lordicon.com/inrunzby.json"
               loop
               autoplay
