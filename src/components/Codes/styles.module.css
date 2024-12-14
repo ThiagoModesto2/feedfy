@@ -1,0 +1,146 @@
+#center {
+  border: 4px solid #9a03d7;
+  display: block;
+  margin: 0 auto;
+  background-color: white;
+  width: 95%;
+  border-radius: 20px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.text {
+  font-family: "Montserrat", sans-serif;
+  font-size: 20px;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.code {
+  font-family: "Montserrat", sans-serif;
+  font-weight: bold;
+  font-size: 22px;
+  text-align: center;
+}
+
+#buttonWrapper {
+  font-size: 20px;
+  width: 288px;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  display: flex;
+  margin: 0 auto;
+  background-color: #9a03d7;
+  border: 0;
+  color: white;
+  font-weight: bold;
+  border-radius: 12px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.icon {
+  padding: 40px 0;
+}
+
+.image {
+  width: 100px;
+  margin: 0 auto;
+  display: flex;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.loading {
+  margin-top: 20px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top: 4px solid #9a03d7;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.input {
+  margin: 20px 0;
+  height: 40px;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+  #buttonWrapper {
+    width: 100% !important;
+  }
+}
+.stars {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.star {
+  font-size: 30px;
+  cursor: pointer;
+  color: gray;
+}
+
+.star.selected {
+  color: #ffd700;
+}
+
+.prices {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.priceButton {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.priceButton.selected {
+  background-color: #9a03d7;
+  color: white;
+}
+
+.question {
+  margin-bottom: 20px;
+}
+
+.question p {
+  margin-bottom: 10px;
+}
+
+.establishmentInfo {
+  margin: 0 auto;
+  display: table;
+  padding-bottom: 30px;
+}
+.establishmentInfo img {
+  width: 80%;
+  margin: 0 auto;
+  display: table;
+}
+
+.establishmentInfo p {
+  color: #9a03d7;
+  font-weight: bold;
+}
