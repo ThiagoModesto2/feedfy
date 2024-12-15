@@ -1,15 +1,11 @@
 "use client";
 
 import React, { useEffect, useState, type FC } from "react";
-
 import { formatMoneyBRL } from "@/utils/formatMoneyBRL";
-
 import Button from "../common/Button";
 import PopupMoney from "../common/PopupMoney";
 import PopupCompleted from "../common/PopupCompleted";
-
 import usePriceStore from "@/store/usePriceStore";
-
 import styles from "./styles.module.css";
 
 const establishments = [
@@ -38,6 +34,7 @@ export const Codes: FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [isAllCompleted, setIsAllCompleted] = useState(false);
+  const [isProcessCompleted, setIsProcessCompleted] = useState(false); // Novo estado
   const [environmentRating, setEnvironmentRating] = useState<number>(0);
   const [serviceRating, setServiceRating] = useState<number>(0);
   const [fuelQualityRating, setFuelQualityRating] = useState<number>(0);
@@ -77,23 +74,28 @@ export const Codes: FC = () => {
     const storedPrice =
       typeof window !== "undefined" ? localStorage.getItem("totalPrice") : null;
     setTotalPrice(storedPrice ? parseFloat(storedPrice) : 0);
+
+    const total = establishments.reduce((acc, next) => acc + next.price, 0);
+    if (Number(storedPrice) >= total) {
+      setIsAllCompleted(true);
+      setPrice(Number(storedPrice));
+    }
   }, []);
 
   useEffect(() => {
     if (isVisibleModalMoney) {
       const timer = setTimeout(() => {
         setIsVisibleModalMoney(false);
+        const finalPrice = price + establishments[currentIndex].price;
+        setPrice(finalPrice);
+
         if (currentIndex + 1 < establishments.length) {
           setCurrentIndex((prev) => prev + 1);
-          const finalPrice = price + establishments[currentIndex].price;
-          setPrice(finalPrice);
           resetFeedback();
         } else {
-          const finalPrice = price + establishments[currentIndex].price;
           if (typeof window !== "undefined") {
             localStorage.setItem("totalPrice", finalPrice.toString());
           }
-          setPrice(finalPrice);
           setIsAllCompleted(true);
         }
       }, 4000);
@@ -103,14 +105,16 @@ export const Codes: FC = () => {
   }, [isVisibleModalMoney, currentIndex, price, setPrice]);
 
   useEffect(() => {
-    const total = establishments.reduce((acc, next) => acc + next.price, 0);
-    if (totalPrice >= total) {
-      setIsAllCompleted(true);
-      setPrice(totalPrice);
-    }
-  }, [totalPrice]);
+    if (isAllCompleted && !isVisibleModalMoney) {
+      const timer = setTimeout(() => {
+        setIsProcessCompleted(true);
+      }, 500);
 
-  if (isAllCompleted) {
+      return () => clearTimeout(timer);
+    }
+  }, [isAllCompleted, isVisibleModalMoney]);
+
+  if (isProcessCompleted) {
     return (
       <>
         <PopupCompleted isVisible={true} />

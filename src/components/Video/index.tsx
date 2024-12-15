@@ -21,11 +21,11 @@ export const Video: React.FC = () => {
 
     const timer = setTimeout(() => {
       setShowButton(true);
-    }, 240000); // 240000 ms = 4 minutos
+    }, 135000); // 135000 ms = 2 minutos e 15 segundos
 
     return () => {
-      document.head.removeChild(script);
       clearTimeout(timer);
+      document.head.removeChild(script);
     };
   }, []);
 
