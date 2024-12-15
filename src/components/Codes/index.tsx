@@ -36,10 +36,7 @@ const establishments = [
 export const Codes: FC = () => {
   const { price, setPrice } = usePriceStore();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(() => {
-    const storedPrice = localStorage.getItem("totalPrice");
-    return storedPrice ? parseFloat(storedPrice) : 0;
-  });
+  const [totalPrice, setTotalPrice] = useState(0);
   const [isAllCompleted, setIsAllCompleted] = useState(false);
   const [environmentRating, setEnvironmentRating] = useState<number>(0);
   const [serviceRating, setServiceRating] = useState<number>(0);
@@ -77,6 +74,12 @@ export const Codes: FC = () => {
   };
 
   useEffect(() => {
+    const storedPrice =
+      typeof window !== "undefined" ? localStorage.getItem("totalPrice") : null;
+    setTotalPrice(storedPrice ? parseFloat(storedPrice) : 0);
+  }, []);
+
+  useEffect(() => {
     if (isVisibleModalMoney) {
       const timer = setTimeout(() => {
         setIsVisibleModalMoney(false);
@@ -87,7 +90,9 @@ export const Codes: FC = () => {
           resetFeedback();
         } else {
           const finalPrice = price + establishments[currentIndex].price;
-          localStorage.setItem("totalPrice", finalPrice.toString());
+          if (typeof window !== "undefined") {
+            localStorage.setItem("totalPrice", finalPrice.toString());
+          }
           setPrice(finalPrice);
           setIsAllCompleted(true);
         }
@@ -101,7 +106,7 @@ export const Codes: FC = () => {
     const total = establishments.reduce((acc, next) => acc + next.price, 0);
     if (totalPrice >= total) {
       setIsAllCompleted(true);
-      setPrice(totalPrice)
+      setPrice(totalPrice);
     }
   }, [totalPrice]);
 
