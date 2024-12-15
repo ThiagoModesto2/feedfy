@@ -7,7 +7,7 @@ import Withdrawal from "@/components/Withdrawal";
 
 export const WithdrawalPages: FC = () => {
   return (
-    <Provider showMenu={false}>
+    <Provider showMenu={true}>
       <Withdrawal />
     </Provider>
   );

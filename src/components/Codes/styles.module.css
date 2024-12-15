@@ -140,7 +140,13 @@
   display: table;
 }
 
+.establishmentInfo h2 {
+  text-align: center;
+  margin-top: 20px;
+}
+
 .establishmentInfo p {
   color: #9a03d7;
   font-weight: bold;
+  text-align: center;
 }

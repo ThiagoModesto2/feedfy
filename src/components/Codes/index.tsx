@@ -1,41 +1,46 @@
+"use client";
+
 import React, { useEffect, useState, type FC } from "react";
-import { useRouter } from "next/navigation";
 
 import { formatMoneyBRL } from "@/utils/formatMoneyBRL";
 
 import Button from "../common/Button";
 import PopupMoney from "../common/PopupMoney";
+import PopupCompleted from "../common/PopupCompleted";
 
-import styles from "./styles.module.css";
 import usePriceStore from "@/store/usePriceStore";
 
+import styles from "./styles.module.css";
 
 const establishments = [
   {
     id: 1,
     name: "Nike",
     photo: "/codes/2nike.webp",
-    price: 80,
+    price: 70.83,
   },
   {
     id: 2,
     name: "Riachuelo",
     photo: "/codes/2riachuelo.webp",
-    price: 77
+    price: 89.21,
   },
   {
     id: 3,
     name: "Posto Ipiranga",
     photo: "/codes/ipianga-768x545.webp",
-    price: 79,
+    price: 75.63,
   },
 ];
 
 export const Codes: FC = () => {
-  const { setPrice } = usePriceStore();
-  const router = useRouter();
+  const { price, setPrice } = usePriceStore();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(() => {
+    const storedPrice = localStorage.getItem("totalPrice");
+    return storedPrice ? parseFloat(storedPrice) : 0;
+  });
+  const [isAllCompleted, setIsAllCompleted] = useState(false);
   const [environmentRating, setEnvironmentRating] = useState<number>(0);
   const [serviceRating, setServiceRating] = useState<number>(0);
   const [fuelQualityRating, setFuelQualityRating] = useState<number>(0);
@@ -64,17 +69,12 @@ export const Codes: FC = () => {
     setIsVisibleModalMoney(true);
   };
 
-    const resetFeedback = () => {
-      setEnvironmentRating(0);
-      setServiceRating(0);
-      setFuelQualityRating(0);
-      setPriceRating(null);
-    };
-
-    const handleGoToWithdraw = () => {
-      router.push("/saque");
-    };
-
+  const resetFeedback = () => {
+    setEnvironmentRating(0);
+    setServiceRating(0);
+    setFuelQualityRating(0);
+    setPriceRating(null);
+  };
 
   useEffect(() => {
     if (isVisibleModalMoney) {
@@ -82,17 +82,41 @@ export const Codes: FC = () => {
         setIsVisibleModalMoney(false);
         if (currentIndex + 1 < establishments.length) {
           setCurrentIndex((prev) => prev + 1);
-          setPrice(totalPrice + establishments[currentIndex].price);
+          const finalPrice = price + establishments[currentIndex].price;
+          setPrice(finalPrice);
           resetFeedback();
         } else {
-          handleGoToWithdraw();
-          setPrice(totalPrice + establishments[currentIndex].price);
+          const finalPrice = price + establishments[currentIndex].price;
+          localStorage.setItem("totalPrice", finalPrice.toString());
+          setPrice(finalPrice);
+          setIsAllCompleted(true);
         }
       }, 4000);
-      
+
       return () => clearTimeout(timer);
     }
-  }, [isVisibleModalMoney]);
+  }, [isVisibleModalMoney, currentIndex, price, setPrice]);
+
+  useEffect(() => {
+    const total = establishments.reduce((acc, next) => acc + next.price, 0);
+    if (totalPrice >= total) {
+      setIsAllCompleted(true);
+      setPrice(totalPrice)
+    }
+  }, [totalPrice]);
+
+  if (isAllCompleted) {
+    return (
+      <>
+        <PopupCompleted isVisible={true} />
+        <div id={styles.center}>
+          <div className={styles.establishmentInfo}>
+            <h2>Obrigado por participar!</h2>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   const currentEstablishment = establishments[currentIndex];
 
@@ -112,7 +136,7 @@ export const Codes: FC = () => {
             className={styles.photo}
           />
           <h2>{currentEstablishment.name}</h2>
-          <p>Preço: R${formatMoneyBRL(currentEstablishment.price)}</p>
+          <p>Preço: {formatMoneyBRL(currentEstablishment.price)}</p>
         </div>
 
         <div className={styles.question}>
