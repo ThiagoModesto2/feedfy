@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect, useState, type FC } from "react";
+import { useRouter } from "next/navigation";
+
 import { formatMoneyBRL } from "@/utils/formatMoneyBRL";
 import Button from "../common/Button";
 import PopupMoney from "../common/PopupMoney";
-import PopupCompleted from "../common/PopupCompleted";
 import usePriceStore from "@/store/usePriceStore";
 import styles from "./styles.module.css";
 
@@ -34,12 +35,13 @@ export const Codes: FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [isAllCompleted, setIsAllCompleted] = useState(false);
-  const [isProcessCompleted, setIsProcessCompleted] = useState(false); // Novo estado
+  const [isProcessCompleted, setIsProcessCompleted] = useState(false); 
   const [environmentRating, setEnvironmentRating] = useState<number>(0);
   const [serviceRating, setServiceRating] = useState<number>(0);
   const [fuelQualityRating, setFuelQualityRating] = useState<number>(0);
   const [priceRating, setPriceRating] = useState<string | null>(null);
   const [isVisibleModalMoney, setIsVisibleModalMoney] = useState(false);
+  const router = useRouter(); 
 
   const isButtonDisabled =
     environmentRating === 0 ||
@@ -62,6 +64,10 @@ export const Codes: FC = () => {
     setTotalPrice((prev) => prev + establishments[currentIndex].price);
     setIsVisibleModalMoney(true);
   };
+
+  const handleToVideo = () => {
+     router.push("/video-explicativo");
+  }
 
   const resetFeedback = () => {
     setEnvironmentRating(0);
@@ -117,10 +123,20 @@ export const Codes: FC = () => {
   if (isProcessCompleted) {
     return (
       <>
-        <PopupCompleted isVisible={true} />
         <div id={styles.center}>
           <div className={styles.establishmentInfo}>
-            <h2>Obrigado por participar!</h2>
+            <h2>PARABÉNS!</h2>
+            <p>
+              Seu cadastro foi realizado e você acaba de ganhar $
+              {formatMoneyBRL(price)}
+            </p>
+            <p>
+              Assista um curto vídeo com um passo a passo explicativo para você
+              aprender a realizar o seu primeiro <strong>SAQUE</strong>
+            </p>
+            <p>
+              <Button handleSubmit={handleToVideo} title="ASSISTIR VÍDEO" />
+            </p>
           </div>
         </div>
       </>
@@ -144,8 +160,21 @@ export const Codes: FC = () => {
             alt={currentEstablishment.name}
             className={styles.photo}
           />
-          <h2>{currentEstablishment.name}</h2>
-          <p>Preço: {formatMoneyBRL(currentEstablishment.price)}</p>
+          <h2
+            style={{
+              fontSize: 20,
+            }}
+          >
+            {currentEstablishment.name}
+          </h2>
+          <p
+            style={{
+              fontSize: 18,
+              marginTop: 5
+            }}
+          >
+            Preço: {formatMoneyBRL(currentEstablishment.price)}
+          </p>
         </div>
 
         <div className={styles.question}>

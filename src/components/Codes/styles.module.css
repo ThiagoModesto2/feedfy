@@ -143,10 +143,13 @@
 .establishmentInfo h2 {
   text-align: center;
   margin-top: 20px;
+  font-size: 35px;
 }
 
 .establishmentInfo p {
   color: #9a03d7;
   font-weight: bold;
   text-align: center;
+  font-size: 22px;
+  margin-top: 20px;
 }

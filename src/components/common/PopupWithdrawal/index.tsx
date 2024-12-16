@@ -4,8 +4,6 @@ import React, { useEffect, type FC } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 
-import { formatMoneyBRL } from "@/utils/formatMoneyBRL";
-
 import styles from "./styles.module.css";
 
 const LottiePlayer = dynamic(
@@ -20,7 +18,6 @@ interface PopupWithdrawalProps {
 
 export const PopupWithdrawal: FC<PopupWithdrawalProps> = ({
   isVisible,
-  price,
 }) => {
   const router = useRouter(); 
 
@@ -28,7 +25,7 @@ export const PopupWithdrawal: FC<PopupWithdrawalProps> = ({
     if (isVisible) {
       const timer = setTimeout(() => {
         router.push("/video"); 
-      }, 2000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
@@ -55,10 +52,8 @@ export const PopupWithdrawal: FC<PopupWithdrawalProps> = ({
             />
 
             <span className={styles.popupText}>PIX Realizado com sucesso!</span>
-            <span className={styles.popupText}>Você recebeu:</span>
-            <span className={styles.popupTextPrice}>
-              {formatMoneyBRL(price)}
-            </span>
+            <span className={styles.popupText}>Verifique suas notificações ou extrato bancário!</span>
+            <span>Obs: O valor pode demorar 1 ou mais minutos para cair.</span>
           </div>
         </div>
       )}

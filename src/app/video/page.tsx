@@ -5,8 +5,8 @@ export const metadata: Metadata = {
   description: "Código lucrativo",
 };
 
-import Video from "@/pages/Video";
+import Video2 from "@/pages/Video2";
 
-export default function VidePage() {
-  return <Video />;
+export default function VideoPage() {
+  return <Video2 />;
 }

@@ -1,29 +1,28 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+
+import { checkout } from "@/config/links";
 
 import Button from "../common/Button";
 
 import styles from "./styles.module.css";
 
 export const Video: React.FC = () => {
-  const router = useRouter();
-
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
     const script = document.createElement("script");
     script.src =
-      "https://scripts.converteai.net/09c2f601-071c-44f2-871b-5863c1a3b3f3/players/67586e6d16f0d937fbb9facd/player.js";
+      "https://scripts.converteai.net/334a67ad-f744-4d8a-9392-e73b84025538/players/675b9e6a1f644a0530aeda6d/player.js";
     script.async = true;
 
     document.head.appendChild(script);
 
     const timer = setTimeout(() => {
       setShowButton(true);
-    }, 0); // Adjust timeout duration as needed
-
+    }, 60000); // 60000 ms = 1 minuto
+    
     return () => {
       clearTimeout(timer);
       document.head.removeChild(script);
@@ -31,16 +30,15 @@ export const Video: React.FC = () => {
   }, []);
 
   const handleInit = () => {
-    router.push("/saque");
+    window.location.href = checkout;
   };
 
   return (
     <>
       <div id={styles.center}>
         <p className={styles.text}>ASSISTA O VÍDEO ATÉ O FINAL</p>
-
         <div
-          id="vid_67586e6d16f0d937fbb9facd"
+          id="vid_675b9e6a1f644a0530aeda6d"
           style={{
             position: "relative",
             width: "100%",
@@ -48,8 +46,8 @@ export const Video: React.FC = () => {
           }}
         >
           <img
-            id="thumb_67586e6d16f0d937fbb9facd"
-            src="https://images.converteai.net/09c2f601-071c-44f2-871b-5863c1a3b3f3/players/67586e6d16f0d937fbb9facd/thumbnail.jpg"
+            id="thumb_675b9e6a1f644a0530aeda6d"
+            src="https://images.converteai.net/334a67ad-f744-4d8a-9392-e73b84025538/players/675b9e6a1f644a0530aeda6d/thumbnail.jpg"
             alt="thumbnail"
             style={{
               position: "absolute",
@@ -62,7 +60,7 @@ export const Video: React.FC = () => {
             }}
           />
           <div
-            id="backdrop_67586e6d16f0d937fbb9facd"
+            id="backdrop_675b9e6a1f644a0530aeda6d"
             style={{
               WebkitBackdropFilter: "blur(5px)",
               backdropFilter: "blur(5px)",
@@ -76,7 +74,7 @@ export const Video: React.FC = () => {
 
         {showButton && (
           <div id={styles.buttonWrapper}>
-            <Button handleSubmit={handleInit} title="REALIZAR SAQUE TESTE" />
+            <Button handleSubmit={handleInit} title="LIBERAR ACESSO AGORA" />
           </div>
         )}
       </div>
